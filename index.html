@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClairEye - AI-Powered Retinal Disease Diagnosis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #00d4ff;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="600" cy="700" r="120" fill="url(%23a)"/></svg>') no-repeat center;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        /* Stats Section */
+        .stats {
+            background: #f8f9fa;
+            padding: 60px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2a5298;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Problem Section */
+        .problem {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 3rem;
+            font-weight: 700;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .problem-card {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .problem-card:hover {
+            transform: scale(1.05);
+        }
+
+        .problem-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Solution Section */
+        .solution {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #00d4ff;
+        }
+
+        /* Applications Section */
+        .applications {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .app-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .app-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .app-icon {
+            font-size: 2.5rem;
+            color: #2a5298;
+            margin-bottom: 1rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .contact-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .contact-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">ClairEye</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#solution">Solution</a></li>
+                <li><a href="#applications">Applications</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container hero-content">
+            <h1>AI-Powered Retinal Disease Diagnosis</h1>
+            <p class="subtitle">Preventing blindness through early detection with cutting-edge machine learning and computer vision technology</p>
+            <a href="#contact" class="cta-button">Get Started Today</a>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item fade-in">
+                    <div class="stat-number">285M</div>
+                    <div class="stat-label">People with vision impairment globally</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">80%</div>
+                    <div class="stat-label">Of vision loss is preventable</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">463M</div>
+                    <div class="stat-label">Adults with diabetes at risk for DR</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">AI accuracy in early detection</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem">
+        <div class="container">
+            <h2 class="section-title fade-in">The Global Vision Crisis</h2>
+            <p class="fade-in" style="text-align: center; font-size: 1.2rem; color: #666; max-width: 800px; margin: 0 auto;">
+                Millions suffer from preventable eye diseases that often go undetected until it's too late. Limited access to ophthalmologists and expensive screening creates barriers to early intervention.
+            </p>
+            <div class="problem-grid">
+                <div class="problem-card fade-in">
+                    <div class="problem-icon">👁️</div>
+                    <h3>Diabetic Retinopathy</h3>
+                    <p>Leading cause of blindness in diabetic patients, often asymptomatic in early stages</p>
+                </div>
+                <div class="problem-card fade-in">
+                    <div class="problem-icon">🔍</div>
+                    <h3>Age-related Macular Degeneration</h3>
+                    <p>Prevalent among elderly populations with limited screening accessibility</p>
+                </div>
+                <div class="problem-card fade-in">
+                    <div class="problem-icon">⚕️</div>
+                    <h3>Limited Specialist Access</h3>
+                    <p>Shortage of ophthalmologists creates bottlenecks in diagnosis and treatment</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section id="solution" class="solution">
+        <div class="container">
+            <h2 class="section-title fade-in">Our AI-Driven Platform</h2>
+            <p class="fade-in" style="text-align: center; font-size: 1.2rem; opacity: 0.9; max-width: 800px; margin: 0 auto;">
+                Advanced machine learning algorithms analyze retinal fundus images to detect and grade multiple eye diseases with clinical-grade accuracy.
+            </p>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Multi-Disease Detection</h3>
+                    <p>Simultaneous analysis for diabetic retinopathy, AMD, glaucoma, and other retinal pathologies from a single image</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📊</div>
+                    <h3>Stage-wise Grading</h3>
+                    <p>Precise classification of disease severity with DR grades 0-4, AMD stages, and comprehensive pathology assessment</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🔬</div>
+                    <h3>Visual Explainability</h3>
+                    <p>Heatmaps and detailed analysis provide transparency and build clinical trust in AI recommendations</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Real-time Analysis</h3>
+                    <p>Instant screening results compatible with portable fundus cameras for immediate clinical decision-making</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Applications Section -->
+    <section id="applications" class="applications">
+        <div class="container">
+            <h2 class="section-title fade-in">Clinical Applications</h2>
+            <div class="app-grid">
+                <div class="app-card fade-in">
+                    <div class="app-icon">🏥</div>
+                    <h3>Primary Eye Care</h3>
+                    <p>Mass screening programs in rural health centers and underserved communities</p>
+                </div>
+                <div class="app-card fade-in">
+                    <div class="app-icon">🩺</div>
+                    <h3>Diabetes Clinics</h3>
+                    <p>Automated DR detection integrated into routine diabetic patient care</p>
+                </div>
+                <div class="app-card fade-in">
+                    <div class="app-icon">💻</div>
+                    <h3>Telemedicine</h3>
+                    <p>Remote diagnostics enabling specialist-level care in distant locations</p>
+                </div>
+                <div class="app-card fade-in">
+                    <div class="app-icon">🔬</div>
+                    <h3>Clinical Trials</h3>
+                    <p>Supporting pharmaceutical research with precise retinal analysis</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container contact-content">
+            <h2 class="section-title fade-in">Ready to Transform Eye Care?</h2>
+            <p class="fade-in">Join us in our mission to prevent avoidable blindness through accessible AI-powered diagnostics. Contact us to learn more about partnerships, integration opportunities, or clinical trials.</p>
+            <a href="mailto:info@claireye.com" class="contact-button fade-in">Contact Us</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 ClairEye. Advancing healthcare through artificial intelligence.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with fade-in class
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add some dynamic stats animation
+        function animateStats() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const finalValue = stat.textContent;
+                stat.textContent = '0';
+                
+                const observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            animateValue(stat, 0, finalValue, 2000);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                });
+                
+                observer.observe(stat);
+            });
+        }
+
+        function animateValue(element, start, end, duration) {
+            const range = parseFloat(end.replace(/[^\d.]/g, ''));
+            const suffix = end.replace(/[\d.]/g, '');
+            const increment = range / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= range) {
+                    element.textContent = end;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current) + suffix;
+                }
+            }, 16);
+        }
+
+        // Initialize animations
+        animateStats();
+    </script>
+</body>
+</html>
